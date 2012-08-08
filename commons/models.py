@@ -5,7 +5,7 @@ from commons.exceptions import MethodNotAllowedException
 import json
 
 
-class Model():
+class ExtModel():
     fields = []
 
     def as_dict(self, fields=None):
