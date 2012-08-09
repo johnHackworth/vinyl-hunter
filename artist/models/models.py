@@ -5,8 +5,8 @@ from datetime import datetime
 
 class Artist(ExtModel, models.Model):
 
-    name = models.CharField(max_length=255, default='')
-    lastFetched = models.DateTimeField()
+    name = models.CharField(max_length=255, default='', primary_key=True)
+    lastFetched = models.DateTimeField(default=datetime(2001,1,1,1,1,1,1))
     thumbnail = models.CharField(max_length=255, default='')
     image = models.CharField(max_length=255, default='')
     largeImage = models.CharField(max_length=255, default='')
