@@ -2,23 +2,44 @@ from artist.models import Artist
 from datetime import datetime
 from lastFmUser.models import LastFm_user
 from vendors.lastfmCrawler.lastfmSearch import Lastfm
+import pytz
+
 
 class LastFm_user_service():
 
 
-    def __init__(self, user_service):
+    def __init__(self, artists_service):
         self.api = Lastfm()
+        self.artistsService = artists_service
 
-    def fetchUser(self, username):
-        lastFm_user = LastFm_user.objects.get_or_create(name=username)[0]
-
+    def fetchUser(self, lastFm_user):
+        username = lastFm_user.name
         self.api.fetch(username)
         for artist_data in self.api.artists:
-            artist = Artist.objects.get_or_create(**artist_data)[0]
+            artists = Artist.objects.filter(name=artist_data['name'])
+            if len(artists) == 0:
+                artist = Artist(**artist_data)
+                artist.save()
+            else:
+                artist = artists[0]
+
             lastFm_user.artists.add(artist)
 
-        lastFm_user.lastFetched = datetime.now()
+        lastFm_user.lastFetched = datetime.now(pytz.utc)
         lastFm_user.save()
+
+    def fetchUserByName(self, username):
+        lastFm_user = LastFm_user.objects.get_or_create(name=username)[0]
+        self.fetchUser(lastFm_user)
+
+    def fetchUserArtists(self, user):
+        for artist in user.artists.all():
+            self.artistsService.updateArtistAlbums(artist)
+
+    def fetchAll(self, username):
+        lastFm_user = LastFm_user.objects.get_or_create(name=username)[0]
+        self.fetchUser(lastFm_user)
+        self.fetchUserArtists(lastFm_user)
 
 
 
