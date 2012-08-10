@@ -15,3 +15,5 @@ class LastFm_user(ExtModel, models.Model):
     class Meta:
         app_label = 'lastFmUser'
         db_table = 'lastFmUsers'
+
+

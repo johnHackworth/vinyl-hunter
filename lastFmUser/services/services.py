@@ -40,6 +40,12 @@ class LastFm_user_service():
         lastFm_user = LastFm_user.objects.get_or_create(name=username)[0]
         self.fetchUser(lastFm_user)
         self.fetchUserArtists(lastFm_user)
+        return lastFm_user
 
+    def getExportedArtists(self, user):
+        exported_artists = []
+        for artist in user.artists.all():
+            exported_artists.append(artist.as_dict())
+        return exported_artists
 
 

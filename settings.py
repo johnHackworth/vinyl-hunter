@@ -153,3 +153,9 @@ LOGGING = {
     }
 }
 
+
+try:
+    from custom_settings import *
+except ImportError:
+    print "Warning: custom_settings could not be loaded"
+    pass

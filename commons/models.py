@@ -31,7 +31,7 @@ class CsrfExemptResource(Resource):
         self.csrf_exempt = getattr(self.handler, 'csrf_exempt', True)
 
 
-class Handler(BaseHandler):
+class ExtHandler(BaseHandler):
 
     def fromRequest(self, request, entity, fields):
         for field in fields:

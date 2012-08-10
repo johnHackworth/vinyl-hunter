@@ -1,10 +1,8 @@
 from django.conf.urls import patterns, include, url
-
-# Uncomment the next two lines to enable the admin:
-# from django.contrib import admin
-# admin.autodiscover()
+import lastFmUser.urls
 
 urlpatterns = patterns('',
+    url(r'^lastfm/', include(lastFmUser.urls)),
     # Examples:
     # url(r'^$', 'vinylhunter.views.home', name='home'),
     # url(r'^vinylhunter/', include('vinylhunter.foo.urls')),
