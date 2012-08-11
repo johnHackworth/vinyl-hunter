@@ -18,7 +18,7 @@ class Album(ExtModel, models.Model):
     priceUpdated = models.BooleanField(default=False)
     availability = models.CharField(max_length=128, default='now')
 
-    fields = ["id", "name", "lastFetched", "artist"]
+    fields = ["title", "currentPrice", "artist", "ASIN"]
 
     class Meta:
         app_label = 'album'

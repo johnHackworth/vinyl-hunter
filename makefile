@@ -4,3 +4,5 @@ install:
 	pip install pytz
 	pip install bottlenose
 
+server:
+	./manage.py runserver 0.0.0.0:8000

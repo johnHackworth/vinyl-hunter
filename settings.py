@@ -153,9 +153,11 @@ LOGGING = {
     }
 }
 
+LAST_FETCH_LIMIT = 3
 
 try:
     from custom_settings import *
 except ImportError:
     print "Warning: custom_settings could not be loaded"
     pass
+

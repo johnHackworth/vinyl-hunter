@@ -1,1 +1,1 @@
-from lastFmUser.services.services import *
+from lastFmUser.services.lastFmUserServices import *

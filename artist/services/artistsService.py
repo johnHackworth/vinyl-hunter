@@ -2,13 +2,18 @@ from artist.models import Artist
 from album.models import Album
 from datetime import datetime, timedelta
 from vendors.amazonProductApiCrawler.amazonSearch import Amazon
+from settings import LAST_FETCH_LIMIT
 import pytz
+
+
+last_fetch_limit = datetime.now(pytz.utc) - timedelta(LAST_FETCH_LIMIT)
 
 
 class Artists_service():
 
-    def __init__(self):
+    def __init__(self, albums_service=None):
         self.api = Amazon()
+        self.albumsService = albums_service
 
     def fetchArtist(self, artist):
         self.api.fetch(artist.name)
@@ -32,19 +37,22 @@ class Artists_service():
                 album.priceUpdated = False
             album.save()
 
-
         artist.lastFetched = datetime.now(pytz.utc)
         artist.save()
 
     def updateArtistAlbums(self, artist):
-        yesterday =  datetime.now(pytz.utc) - timedelta(1)
-        if artist.lastFetched < yesterday:
+        if artist.lastFetched < last_fetch_limit:
             self.fetchArtist(artist)
 
     def updateArtistAlbumsByName(self, name):
         artist = Artist.objects.get_or_create(name=name)[0]
         self.updateArtistAlbums(artist)
 
+    def getArtistAlbumsByName(self, artist_name, max_price=None):
+        return self.albumsService.getExportedArtistAlbums(artist_name, max_price)
+
+    def getArtistAlbums(self, artist, max_price=None):
+        return self.albumsService.getExportedArtistAlbums(artist.name, max_price)
 
 
 
