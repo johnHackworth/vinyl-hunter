@@ -153,7 +153,7 @@ LOGGING = {
     }
 }
 
-LAST_FETCH_LIMIT = 3
+LAST_FETCH_LIMIT = 1
 
 try:
     from custom_settings import *
