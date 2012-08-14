@@ -3,6 +3,8 @@ install:
 	git clone git@github.com:johnHackworth/lastfmCrawler.git ./vendors/lastfmCrawler/
 	pip install pytz
 	pip install bottlenose
+	pip install django-piston
+	apt-get install python-mysqldb
 
 server:
 	./manage.py runserver 0.0.0.0:8000
