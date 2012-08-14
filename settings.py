@@ -154,6 +154,7 @@ LOGGING = {
 }
 
 LAST_FETCH_LIMIT = 1
+MAX_FETCH_BATCH = 10
 
 try:
     from custom_settings import *

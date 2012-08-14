@@ -69,3 +69,8 @@ class LastFm_user_service():
         for artist in lastFm_user.artists.all():
             albums += (self.artistsService.getArtistAlbums(artist, max_price))
         return albums
+
+    def getNotUpdatedUsers(self):
+        users = LastFm_user.objects.filter(lastFetched__lte=last_fetch_limit)
+        return users
+
