@@ -54,5 +54,9 @@ class Artists_service():
     def getArtistAlbums(self, artist, max_price=None):
         return self.albumsService.getExportedArtistAlbums(artist.name, max_price)
 
+    def getNotUpdatedArtists(self):
+        artists = Artist.objects.filter(lastFetched__lte=last_fetch_limit)
+        return artists
+
 
 
