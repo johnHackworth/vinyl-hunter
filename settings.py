@@ -124,7 +124,8 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'album',
     'artist',
-    'lastFmUser'
+    'lastFmUser',
+    'user_session'
 )
 
 # A sample logging configuration. The only tangible logging
@@ -155,6 +156,8 @@ LOGGING = {
 
 LAST_FETCH_LIMIT = 1
 MAX_FETCH_BATCH = 10
+SESSION_SALT = 'abcdabcd'
+PASSWORD_SALT = 'pepper'
 
 try:
     from custom_settings import *

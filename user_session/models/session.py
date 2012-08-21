@@ -1,5 +1,6 @@
-from django.db import models, User
+from django.db import models
 from commons.models import ExtModel
+from user_session.models import User
 from datetime import datetime
 import pytz
 
@@ -7,7 +8,7 @@ import pytz
 class Session(ExtModel, models.Model):
 
     id = models.IntegerField(primary_key=True)
-    user = models.ForeignKey(User)
+    # user = models.ForeignKey(User)
     hash = models.CharField(max_length=255, default='')
     created = models.DateTimeField(default=(datetime.now(pytz.utc)))
     lastChecked = models.DateTimeField(default=(datetime.now(pytz.utc)))
@@ -15,5 +16,5 @@ class Session(ExtModel, models.Model):
     fields = ["id", "user", "hash", "created", "lastChecked"]
 
     class Meta:
-        app_label = 'session'
-        db_table = 'sessions'
+        app_label = 'user_session'
+        db_table = 'user_sessions'

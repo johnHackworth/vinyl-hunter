@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 import lastFmUser.urls
 
 urlpatterns = patterns('',
-    url(r'^lastfm/', include(lastFmUser.urls)),
+    url(r'lastfm/', include(lastFmUser.urls)),
     # Examples:
     # url(r'^$', 'vinylhunter.views.home', name='home'),
     # url(r'^vinylhunter/', include('vinylhunter.foo.urls')),
