@@ -1,10 +1,13 @@
 from django.db import models
 from commons.models import ExtModel
+from commons.exceptions import InvalidFieldsException
 from datetime import datetime
 import pytz
 
+
 class User(ExtModel, models.Model):
 
+    # id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=255, default='')
     lastname = models.CharField(max_length=255, default='')
     login = models.CharField(max_length=255, default=None)
@@ -15,9 +18,10 @@ class User(ExtModel, models.Model):
     gender = models.IntegerField(max_length=1, default=1)
     birthday = models.DateField(default="2001-01-01")
     creationdate = models.DateField(auto_now=True, auto_now_add=True)
-    lastlogin = models.DateTimeField(default=str(datetime.now()))
+    lastlogin = models.DateTimeField(default=str(datetime.now(pytz.utc)))
     aboutme = models.CharField(max_length=1024)
     languaje = models.IntegerField(max_length=3, default=0)
+
 
     fields = ["id", "name", "lastname", "login", "email", "location", "country", "gender", "aboutme", "languaje"]
 
@@ -27,12 +31,6 @@ class User(ExtModel, models.Model):
 
     def as_dict(self, fields=None):
         dictionary = super(User, self).as_dict(fields)
-
-        if self.image_id is not None and self.image_id > 0:
-            imageObj = Image.objects.filter(id=self.image_id)
-            if len(imageObj) > 0:
-                dictionary['image_url'] = imageObj[0].url
-
         return dictionary
 
     def validate(self):

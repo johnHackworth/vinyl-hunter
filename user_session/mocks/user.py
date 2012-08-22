@@ -16,6 +16,11 @@ class UsersTestCaseFactory:
         user.aboutme = 'Nanotechnology and neovictorianism'
         return user
 
+    def persistedUser(self):
+        user = self.user()
+        user.save()
+        return user
+
     def users(self):
         user = User()
         user.name = 'Erasmas'

@@ -7,8 +7,8 @@ import pytz
 
 class Session(ExtModel, models.Model):
 
-    id = models.IntegerField(primary_key=True)
-    # user = models.ForeignKey(User)
+    # id = models.IntegerField(primary_key=True, auto=sTrue)
+    user = models.ForeignKey(User)
     hash = models.CharField(max_length=255, default='')
     created = models.DateTimeField(default=(datetime.now(pytz.utc)))
     lastChecked = models.DateTimeField(default=(datetime.now(pytz.utc)))

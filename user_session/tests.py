@@ -52,7 +52,7 @@ class UserModelTest(TestCase):
         except InvalidFieldsException:
             self.assertTrue(True)
         except:
-            self.fail('bad type of exception')
+            self.fail('bad type of exception (1)')
 
         user.login = 'a'
         try:
@@ -61,7 +61,7 @@ class UserModelTest(TestCase):
         except InvalidFieldsException:
             self.assertTrue(True)
         except:
-            self.fail('bad type of exception')
+            self.fail('bad type of exception (2)')
 
         user.password = 'a'
         try:
@@ -70,7 +70,7 @@ class UserModelTest(TestCase):
         except InvalidFieldsException:
             self.assertTrue(True)
         except:
-            self.fail('bad type of exception')
+            self.fail('bad type of exception (3)')
 
         user.email = 'a'
         try:
@@ -85,26 +85,32 @@ class sessionServiceTest(TestCase):
     session_service = Session_service(user_service)
 
     def test_create_session(self):
-        session = self.session_service.createSession(1)
-        self.assertTrue(session.user_id == 1)
+        user = self.casesFactory.persistedUser()
+
+        session = self.session_service.createSession(user.id)
+        self.assertTrue(session.user.id == user.id)
         self.assertTrue(session.hash is not None)
         self.assertTrue(len(session.hash) > 10)
 
     def test_delete_session(self):
-        session = self.session_service.createSession(1)
+        user = self.casesFactory.user()
+        user.save()
+        session = self.session_service.createSession(user.id)
         session.save()
         self.session_service.deleteSession(session.id, session.hash)
-        userSession = self.session_service.getSession(1, session.id, session.hash)
+        userSession = self.session_service.getSession(user.id, session.id, session.hash)
 
         self.assertTrue(userSession is None)
 
     def test_getSession(self):
-        session = self.session_service.createSession(1)
+        user = self.casesFactory.user()
+        user.save()
+        session = self.session_service.createSession(user.id)
         session.save()
-        userSession = self.session_service.getSession(1, session.id, session.hash)
+        userSession = self.session_service.getSession(user.id, session.id, session.hash)
         self.assertFalse(userSession is None)
         self.assertTrue(userSession.id == session.id)
-        self.assertTrue(userSession.user_id == 1)
+        self.assertTrue(userSession.user == user)
 
     def test_logUser(self):
         user = self.casesFactory.user()
@@ -133,16 +139,16 @@ class userServiceTest(TestCase):
     def test_findUser(self):
         newUsers = self.casesFactory.users()
 
-        user1 = self.user_service.findUser({"name" : "Orolo"})
+        user1 = self.user_service.findUser(name="Orolo")
 
         self.assertEquals(user1.name, "Orolo")
         self.assertEquals(user1.login, "orolo")
 
-        user2 = self.user_service.findUser({"login" : 'erasmas'})
+        user2 = self.user_service.findUser(login="erasmas")
         self.assertEquals(user2.name, "Erasmas")
         self.assertEquals(user2.login, "erasmas")
 
-        user3 = self.user_service.findUser({"login" : 'Fra'})
+        user3 = self.user_service.findUser(login="Fra")
         self.assertEquals(user3, None)
 
 
@@ -160,10 +166,10 @@ class userServiceTest(TestCase):
 
         try:
             user = self.user_service.saveUser(user)
-        except InvalidFieldsException:
+        except:
             self.fail()
 
-        userDB = self.user_service.findUser({'login':'prueba'})
+        userDB = self.user_service.findUser(login="prueba")
 
         self.assertEquals(user.id, userDB.id)
 
@@ -211,8 +217,6 @@ class userServiceTest(TestCase):
         testCase2 = session.as_dict(["id", "hash"])
         testCase["session"] = testCase2
         testCase = json.dumps(testCase)
-
-
 
         self.assertEquals(testCase, userSessionInfo)
 

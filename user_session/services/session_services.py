@@ -13,14 +13,19 @@ class Session_service():
         self.user_service = user_service
 
     def createSession(self, user_id):
-        session = Session()
-        session.user_id = user_id
-        session.hash = crypt(str(random()), settings.SESSION_SALT) + crypt(str(random()), settings.SESSION_SALT)
-        session.save()
-        return session
+        user = self.user_service.findUser(id=user_id)
+        if user is not None:
+            session = Session()
+            session.user = user
+            session.hash = crypt(str(random()), settings.SESSION_SALT) + crypt(str(random()), settings.SESSION_SALT)
+            session.save()
+            return session
+        else:
+            return None
 
     def getSession(self, user_id, session_id, session_hash):
-        result = Session.objects.filter(user_id=user_id, id=session_id, hash=session_hash)
+        user = self.user_service.findUser(id=user_id)
+        result = Session.objects.filter(user=user, id=session_id, hash=session_hash)
         if len(result) == 0:
             return None
         else:

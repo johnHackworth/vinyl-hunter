@@ -8,8 +8,8 @@ import json
 class User_service():
 
 
-    def findUser(self, filter):
-        users = User.objects.filter(**filter)
+    def findUser(self, *args, **kwargs):
+        users = User.objects.filter(**kwargs)
         if len(users) > 0:
             return users[0]
         else:
