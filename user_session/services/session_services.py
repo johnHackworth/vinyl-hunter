@@ -51,3 +51,4 @@ class Session_service():
                     session = self.createSession(user.id)
                     return self.user_service.userSessionInfo(user, session)
         return None
+

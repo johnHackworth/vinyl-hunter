@@ -40,10 +40,13 @@ class User_service():
         return user
 
     def assignPassword(self, user, old_password, new_password):
-        if user.id is None or user.password == crypt.crypt(old_password, settings.PASSWORD_SALT):
+
+        if (user.id is None or user.password == crypt.crypt(old_password, settings.PASSWORD_SALT) )and new_password is not None:
             user.password = crypt.crypt(new_password, settings.PASSWORD_SALT)
             return user
         else:
             raise InvalidPasswordException(old_password)
 
-
+    def createUser(self):
+        user = User()
+        return user
