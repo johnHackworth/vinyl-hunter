@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseForbidden, HttpResponseNotAllowed
 from user_session.services import User_service, Session_service
 from commons.models import ExtHandler
-from commons.exceptions import InvalidPasswordException, ExistingUserException
+from commons.exceptions import InvalidPasswordException, ExistingUserException, InvalidFieldsException
 
 class User_handler(ExtHandler):
 
@@ -49,7 +49,6 @@ class User_handler(ExtHandler):
         try:
 
             self.user_service.assignPassword(user, None, request.POST.get('password'))
-            return 1
         except InvalidPasswordException as invalid_password:
             return HttpResponseForbidden(str(invalid_password))
         try:
