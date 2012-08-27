@@ -1,3 +1,5 @@
+src
+src/*
 *.mo
 *.egg-info
 *.egg
