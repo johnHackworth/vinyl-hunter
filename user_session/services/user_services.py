@@ -7,6 +7,8 @@ import json
 
 class User_service():
 
+    def __init__(self, lastFm_user_service = None):
+        self.lastFm_service = lastFm_user_service
 
     def findUser(self, *args, **kwargs):
         users = User.objects.filter(**kwargs)
@@ -50,3 +52,34 @@ class User_service():
     def createUser(self):
         user = User()
         return user
+
+    def assignLastFmUser(self, user, lastFm_user):
+        user.lastFmUser = lastFm_user
+        user.save()
+        self.importArtistsFromLastFmUser(user)
+
+    def searchAndAssignLastFmUser(self, user, lastFm_name):
+        lastFm_user = self.lastFm_service.fetchAll(lastFm_name)
+        self.assignLastFmUser(user, lastFm_user)
+
+    def importArtistsFromLastFmUser(self, user):
+        if user.lastFmUser is not None:
+            for artist in user.lastFmUser.artists.all():
+                user.artists.add(artist)
+
+    def addArtist(self, user, artist_name):
+        artist = self.lastFm_service.getArtist(artist_name)
+        user.artists.add(artist)
+
+    def ignoreArtist(self, user, artist_name):
+        artist = self.lastFm_service.getArtist(artist_name)
+        user.ignoredArtists.add(artist)
+
+    def getExportedArtists(self, user):
+        exported_artists = []
+        for artist in user.artists.all():
+            if artist not in user.ignoredArtists.all():
+                exported_artists.append(artist.as_dict())
+        return exported_artists
+
+

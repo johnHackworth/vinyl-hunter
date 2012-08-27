@@ -23,21 +23,18 @@ class User_handler(ExtHandler):
         else:
             return self.getUser(identification, "login")
 
-    def update(self, request, identification):
+    def update(self, request):
         sessionDTO = self.getSessionData(request)
         loggedUser = self.session_service.getLoggedUser(sessionDTO)
         if loggedUser is not None:
-            if str(loggedUser.id) != str(identification):
-                return HttpResponseForbidden('<h1>not the user</h1>')
-            else:
-                self.fromRequest(request, loggedUser, self.fields)
-                try:
-                    loggedUser = self.user_service.saveUser(loggedUser)
-                except InvalidFieldsException as invalid_fields:
-                    return HttpResponseForbidden(invalid_fields)
-                except ExistingUserException as invalid_user:
-                    return HttpResponseForbidden(invalid_user)
-                return HttpResponse(loggedUser.as_json())
+            self.fromRequest(request, loggedUser, self.fields)
+            try:
+                loggedUser = self.user_service.saveUser(loggedUser)
+            except InvalidFieldsException as invalid_fields:
+                return HttpResponseForbidden(invalid_fields)
+            except ExistingUserException as invalid_user:
+                return HttpResponseForbidden(invalid_user)
+            return HttpResponse(loggedUser.as_json())
         else:
             return HttpResponseForbidden('<h1>not a user</h1>')
 

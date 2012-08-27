@@ -58,5 +58,19 @@ class Artists_service():
         artists = Artist.objects.filter(lastFetched__lte=last_fetch_limit)
         return artists
 
+    def getArtist(self, artist_name):
+        artists = Artist.objects.filter(name=artist_name)
+        if len(artists) == 0:
+            return None
+        else:
+            return artists[0]
+
+    def createArtist(self, artist_data):
+        artist = Artist(**artist_data)
+        artist.save()
+        self.updateArtistAlbums(artist)
+        return artist
+
+
 
 

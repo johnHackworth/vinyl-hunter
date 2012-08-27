@@ -1,6 +1,8 @@
 from django.db import models
 from commons.models import ExtModel
 from commons.exceptions import InvalidFieldsException
+from lastFmUser.models import LastFm_user
+from artist.models import Artist
 from datetime import datetime
 import pytz
 
@@ -17,13 +19,16 @@ class User(ExtModel, models.Model):
     country = models.IntegerField(max_length=3, default=1)
     gender = models.IntegerField(max_length=1, default=1)
     birthday = models.DateField(default="2001-01-01")
-    creationdate = models.DateField(auto_now=True, auto_now_add=True)
-    lastlogin = models.DateTimeField(default=str(datetime.now(pytz.utc)))
-    aboutme = models.CharField(max_length=1024)
-    languaje = models.IntegerField(max_length=3, default=0)
+    creationDate = models.DateField(auto_now=True, auto_now_add=True)
+    lastLogin = models.DateTimeField(default=str(datetime.now(pytz.utc)))
+    about = models.CharField(max_length=1024)
+    language = models.IntegerField(max_length=3, default=0)
+    lastFmUser = models.ForeignKey(LastFm_user, null=True, default=None)
+    artists = models.ManyToManyField(Artist, related_name='user_artists',symmetrical=False)
+    ignoredArtists = models.ManyToManyField(Artist, related_name='ignored_artists',symmetrical=False)
 
 
-    fields = ["id", "name", "lastname", "login", "email", "location", "country", "gender", "aboutme", "languaje"]
+    fields = ["id", "name", "lastname", "login", "email", "location", "country", "gender", "about", "language"]
 
     class Meta:
         app_label = 'user_session'
@@ -43,3 +48,6 @@ class User(ExtModel, models.Model):
             invalidFields.append('email')
         if len(invalidFields) > 0:
             raise InvalidFieldsException(invalidFields)
+
+
+

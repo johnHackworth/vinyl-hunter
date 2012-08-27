@@ -74,3 +74,15 @@ class LastFm_user_service():
         users = LastFm_user.objects.filter(lastFetched__lte=last_fetch_limit)
         return users
 
+    def getArtist(self, artist_name):
+        artist = self.artistsService.getArtist(artist_name)
+        if artist is None:
+            artist_data = self.fetchArtist(artist_name)
+            artist = self.artistsService.createArtist(artist_data)
+        return artist
+
+    def fetchArtist(self, artist_name):
+        return self.api.fetchArtist(artist_name)
+
+
+

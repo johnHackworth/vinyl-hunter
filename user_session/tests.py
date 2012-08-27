@@ -242,3 +242,17 @@ class userServiceTest(TestCase):
 
         self.assertTrue(success)
 
+    def test_assignNonePassword(self):
+        newUsers = self.casesFactory.users()
+        user1 = self.user_service.findUser({"name" : "Orolo"})
+
+        success = False
+
+        try:
+            self.user_service.assignPassword(user1, 'prueba2', 'prueba2')
+        except InvalidPasswordException:
+            success = True
+        except:
+            success = False
+        self.assertTrue(success)
+
