@@ -48,11 +48,11 @@ class Artists_service():
         artist = Artist.objects.get_or_create(name=name)[0]
         self.updateArtistAlbums(artist)
 
-    def getArtistAlbumsByName(self, artist_name, max_price=None):
-        return self.albumsService.getExportedArtistAlbums(artist_name, max_price)
+    def getArtistAlbumsByName(self, artist_name, max_price=None, filter_singles=False):
+        return self.albumsService.getExportedArtistAlbums(artist_name, max_price, filter_singles)
 
-    def getArtistAlbums(self, artist, max_price=None):
-        return self.albumsService.getExportedArtistAlbums(artist.name, max_price)
+    def getArtistAlbums(self, artist, max_price=None, filter_singles=False):
+        return self.albumsService.getExportedArtistAlbums(artist.name, max_price, filter_singles)
 
     def getNotUpdatedArtists(self):
         artists = Artist.objects.filter(lastFetched__lte=last_fetch_limit)

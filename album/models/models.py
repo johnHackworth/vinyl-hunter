@@ -17,8 +17,9 @@ class Album(ExtModel, models.Model):
     image = models.CharField(max_length = 255, null=True, blank=True)
     priceUpdated = models.BooleanField(default=False)
     availability = models.CharField(max_length=128, default='now')
+    format = models.CharField(max_length=32, null=True, blank=True, default=None)
 
-    fields = ["title", "currentPrice", "artist", "ASIN", "URL", "thumbnail", "minPrice"]
+    fields = ["title", "currentPrice", "artist", "ASIN", "URL", "thumbnail", "minPrice", "format"]
 
     class Meta:
         app_label = 'album'
