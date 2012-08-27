@@ -75,11 +75,22 @@ class User_service():
         artist = self.lastFm_service.getArtist(artist_name)
         user.ignoredArtists.add(artist)
 
-    def getExportedArtists(self, user):
-        exported_artists = []
+    def getUserArtists(self, user):
+        not_ignored_artists = []
         for artist in user.artists.all():
             if artist not in user.ignoredArtists.all():
+                not_ignored_artists.append(artist)
+        return not_ignored_artists
+
+    def getExportedArtists(self, user):
+        exported_artists = []
+        for artist in self.getUserArtists(user):
                 exported_artists.append(artist.as_dict())
         return exported_artists
 
+    def getUserAlbums(self, user, max_price=None):
+        albums = []
+        for artist in self.getUserArtists(user):
+            albums += (self.lastFm_service.artistsService.getArtistAlbums(artist, max_price))
+        return albums
 
