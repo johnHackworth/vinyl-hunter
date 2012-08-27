@@ -10,8 +10,8 @@ class Session_handler(ExtHandler):
 
     def create(self, request):
 
-        login = request.GET.get('username')
-        password = request.GET.get('password')
+        login = request.POST.get('username')
+        password = request.POST.get('password')
         result = self.session_service.logUser(login, password)
         if result is None:
             return HttpResponseNotFound('<h1>Incorrect login attemp</h1>')
