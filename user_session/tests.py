@@ -1,4 +1,3 @@
-
 from django.test import TestCase
 from user_session.models import *
 from user_session.services import *
