@@ -6,11 +6,12 @@ install:
 	sudo pip install django
 	sudo pip install pytz
 	sudo pip install bottlenose
-	sudo pip install django-piston
+	sudo apt-get install mercurial
+	sudo pip install hg+http://bitbucket.org/jespern/django-piston
 	sudo apt-get install mysql-server
 	sudo apt-get install python-mysqldb
 	mysql -u root < install.sql
 	./manage.py syncdb
 
 server:
-	./manage.py runserver 0.0.0.0:8000
+	./manage.py runserver 0.0.0.0:8001
