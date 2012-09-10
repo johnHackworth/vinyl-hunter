@@ -2,6 +2,7 @@ from datetime import datetime
 from piston.resource import Resource
 from piston.handler import BaseHandler
 from commons.exceptions import MethodNotAllowedException
+from commons.CORSResource import CORSResource
 import json
 
 
@@ -24,7 +25,7 @@ class ExtModel():
         return json.dumps(self.as_dict(fields))
 
 
-class CsrfExemptResource(Resource):
+class CsrfExemptResource(CORSResource):
     """A Custom Resource that is csrf exempt"""
     def __init__(self, handler, authentication=None):
         super(CsrfExemptResource, self).__init__(handler, authentication)
