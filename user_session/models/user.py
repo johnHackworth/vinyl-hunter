@@ -5,6 +5,7 @@ from lastFmUser.models import LastFm_user
 from artist.models import Artist
 from datetime import datetime
 import pytz
+from django.core.validators import email_re
 
 
 class User(ExtModel, models.Model):
@@ -40,14 +41,14 @@ class User(ExtModel, models.Model):
 
     def validate(self):
         invalidFields = []
-        if self.login is None:
+        if self.login is None or len(self.login) < 4:
             invalidFields.append('login')
-        if self.password is None:
+        if self.password is None or len(self.password) < 4:
             invalidFields.append('password')
         if self.email is None:
             invalidFields.append('email')
+        if not email_re.match(self.email):
+            invalidFields.append('email')
         if len(invalidFields) > 0:
             raise InvalidFieldsException(invalidFields)
-
-
 
