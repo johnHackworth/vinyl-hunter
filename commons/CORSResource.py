@@ -9,13 +9,14 @@ class CORSResource(Resource):
 
     # headers sent in all responses
     cors_headers = [
-        ('Access-Control-Allow-Origin',     '*'),
-        ('Access-Control-Allow-Headers',    'Authorization, Content-Type'),
+        ('Access-Control-Allow-Origin', '*'),
+        ('Access-Control-Allow-Headers',  'Content-Type, Authorization, *'),
+        #X-PINGOTHER, Authorization, Content-Type, Origin, X-Requested-With, X-Requested-By, *'),
     ]
 
     # headers sent in pre-flight responses
     preflight_headers = cors_headers + [
-        ('Access-Control-Allow-Methods',    'GET,POST,PUT,DELETE'),
+        ('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS'),
         ('Access-Control-Allow-Credentials','true')
     ]
 

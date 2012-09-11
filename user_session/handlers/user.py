@@ -5,7 +5,7 @@ from commons.exceptions import InvalidPasswordException, ExistingUserException, 
 
 class User_handler(ExtHandler):
 
-    allowed_methods = ('GET, POST, PUT, DELETE')
+    allowed_methods = ('OPTIONS, GET, POST, PUT, DELETE')
     user_service = User_service()
     session_service = Session_service(user_service)
     fields = ["name", "lastname", "email", "location", "country", "gender", "aboutme", "languaje"]
@@ -42,10 +42,9 @@ class User_handler(ExtHandler):
         user = self.user_service.createUser()
         self.fromRequest(request, user, self.fields)
 
-        user.login = request.POST.get('login')
+        user.login = request.data['login']
         try:
-
-            self.user_service.assignPassword(user, None, request.POST.get('password'))
+            self.user_service.assignPassword(user, None, request.data['password'])
         except InvalidPasswordException as invalid_password:
             return HttpResponseForbidden(str(invalid_password))
         try:
