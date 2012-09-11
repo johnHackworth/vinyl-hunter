@@ -49,6 +49,6 @@ class User(ExtModel, models.Model):
             invalidFields.append('email')
         elif not email_re.match(str(self.email)):
             invalidFields.append('email')
-            if len(invalidFields) > 0:
-                raise InvalidFieldsException(invalidFields)
+        if len(invalidFields) > 0:
+            raise InvalidFieldsException(invalidFields)
 
