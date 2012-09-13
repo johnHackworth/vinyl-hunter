@@ -5,7 +5,7 @@ import pytz
 
 
 class Image(models.Model):
-    url = models.CharField(max_length=1024)
+    url = models.CharField(max_length=640)
     user = models.Integeruser = models.ForeignKey(User)
     created = models.DateTimeField(default=(datetime.now(pytz.utc)))
 
