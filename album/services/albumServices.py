@@ -8,11 +8,13 @@ class Album_service():
         self.api = Amazon()
 
 
-    def getArtistAlbums(self, artist_name):
+    def getArtistAlbums(self, artist_name, currency=None):
         albums = Album.objects.filter(artist=artist_name)
+        if currency:
+            albums = albums.filter(currency=currency)
         return albums
 
-    def getExportedArtistAlbums(self, artist_name, max_price = None, filter_single = False):
+    def getExportedArtistAlbums(self, artist_name, max_price = None, filter_single = False, currency = None):
         albums = self.getArtistAlbums(artist_name)
         exported_albums = []
         for album in albums:

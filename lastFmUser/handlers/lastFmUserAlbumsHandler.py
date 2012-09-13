@@ -24,7 +24,18 @@ class LastFm_user_albums_handler(ExtHandler):
             max_price = request.GET["maxPrice"]
         else:
             max_price = None
+
+        if "excludeSingles" in request.GET:
+            exclude_singles = request.GET["excludeSingles"]
+        else:
+            exclude_singles = False
+
+        if "currency" in request.GET:
+            currency = request.GET["currency"]
+        else:
+            currency = False
+
         user = self.lastfm_service.fetchAll(username)
-        response = self.lastfm_service.getUserAlbums(user, max_price)
+        response = self.lastfm_service.getUserAlbums(user, max_price, exclude_singles, currency)
         return response
 

@@ -66,7 +66,7 @@ class LastFm_user_service():
         lastFm_user = lastFm_users[0]
         return self.getUserAlbums(lastFm_user, max_price)
 
-    def getUserAlbums(self, lastFm_user, max_price=None):
+    def getUserAlbums(self, lastFm_user, max_price=None, filterSingles=False, currency=None):
         albums = []
         for artist in lastFm_user.artists.all():
             albums += (self.artistsService.getArtistAlbums(artist, max_price))

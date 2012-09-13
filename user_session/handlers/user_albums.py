@@ -29,6 +29,12 @@ class User_albums_handler(ExtHandler):
             else:
                 exclude_singles = False
 
-            response = self.user_service.getUserAlbums(user, max_price, exclude_singles)
+            if "currency" in request.GET:
+                currency = request.GET["currency"]
+            else:
+                currency = False
+
+            return 1
+            response = self.user_service.getUserAlbums(user, max_price, exclude_singles, currency)
             return HttpResponse(response)
 

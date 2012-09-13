@@ -88,9 +88,9 @@ class User_service():
                 exported_artists.append(artist.as_dict())
         return exported_artists
 
-    def getUserAlbums(self, user, max_price=None, filter_singles = False):
+    def getUserAlbums(self, user, max_price=None, filter_singles = False, currency=None):
         albums = []
         for artist in self.getUserArtists(user):
-            albums += (self.lastFm_service.artistsService.getArtistAlbums(artist, max_price, bool(filter_singles)))
+            albums += (self.lastFm_service.artistsService.getArtistAlbums(artist, max_price, bool(filter_singles), currency))
         return albums
 

@@ -16,28 +16,31 @@ class Artists_service():
         self.albumsService = albums_service
 
     def fetchArtist(self, artist):
-        self.api.fetch(artist.name)
-        for album_data in self.api.albums:
+        try:
+            self.api.fetch(artist.name)
+            for album_data in self.api.albums:
 
-            album_data['artist'] = artist
-            currentPrice = album_data.pop('price')
+                album_data['artist'] = artist
+                currentPrice = album_data.pop('price')
 
-            albums = Album.objects.filter(ASIN=album_data['ASIN'])
-            if len(albums) == 0:
-                album = Album(**album_data)
-            else:
-                album = albums[0]
+                albums = Album.objects.filter(ASIN=album_data['ASIN'])
+                if len(albums) == 0:
+                    album = Album(**album_data)
+                else:
+                    album = albums[0]
 
-            album.currentPrice = currentPrice
-            album.lastFetched = datetime.now(pytz.utc)
-            if album.minPrice == 0.00 or album.minPrice > album.currentPrice:
-                album.minPrice = album.currentPrice
-                album.priceUpdated = True
-            else:
-                album.priceUpdated = False
-            album.save()
-        artist.lastFetched = datetime.now(pytz.utc)
-        artist.save()
+                album.currentPrice = currentPrice
+                album.lastFetched = datetime.now(pytz.utc)
+                if album.minPrice == 0.00 or album.minPrice > album.currentPrice:
+                    album.minPrice = album.currentPrice
+                    album.priceUpdated = True
+                else:
+                    album.priceUpdated = False
+                album.save()
+            artist.lastFetched = datetime.now(pytz.utc)
+            artist.save()
+        except:
+            print "ALERT: we couldn't fetch data from " + artist.name
 
     def updateArtistAlbums(self, artist):
         if artist.lastFetched < last_fetch_limit:
@@ -50,8 +53,8 @@ class Artists_service():
     def getArtistAlbumsByName(self, artist_name, max_price=None, filter_singles=False):
         return self.albumsService.getExportedArtistAlbums(artist_name, max_price, filter_singles)
 
-    def getArtistAlbums(self, artist, max_price=None, filter_singles=False):
-        return self.albumsService.getExportedArtistAlbums(artist.name, max_price, filter_singles)
+    def getArtistAlbums(self, artist, max_price=None, filter_singles=False, currency=None):
+        return self.albumsService.getExportedArtistAlbums(artist.name, max_price, filter_singles, currency)
 
     def getNotUpdatedArtists(self):
         artists = Artist.objects.filter(lastFetched__lte=last_fetch_limit)
