@@ -37,7 +37,9 @@ class LastFm_user_service():
             self.fetchUser(user)
 
     def updateUserByName(self, username):
+        print username
         lastFm_user = LastFm_user.objects.get_or_create(name=username)[0]
+        print 2
         self.updateUser(lastFm_user)
         return lastFm_user
 

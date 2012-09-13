@@ -7,6 +7,7 @@ class Album_service():
     def __init__(self):
         self.api = Amazon()
 
+
     def getArtistAlbums(self, artist_name):
         albums = Album.objects.filter(artist=artist_name)
         return albums

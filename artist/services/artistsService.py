@@ -36,7 +36,6 @@ class Artists_service():
             else:
                 album.priceUpdated = False
             album.save()
-
         artist.lastFetched = datetime.now(pytz.utc)
         artist.save()
 
