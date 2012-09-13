@@ -69,7 +69,7 @@ class LastFm_user_service():
     def getUserAlbums(self, lastFm_user, max_price=None, filterSingles=False, currency=None):
         albums = []
         for artist in lastFm_user.artists.all():
-            albums += (self.artistsService.getArtistAlbums(artist, max_price))
+            albums += (self.artistsService.getArtistAlbums(artist, max_price, filterSingles, currency))
         return albums
 
     def getNotUpdatedUsers(self):

@@ -15,7 +15,7 @@ class Album_service():
         return albums
 
     def getExportedArtistAlbums(self, artist_name, max_price = None, filter_single = False, currency = None):
-        albums = self.getArtistAlbums(artist_name)
+        albums = self.getArtistAlbums(artist_name, currency)
         exported_albums = []
         for album in albums:
             if max_price is None or float(album.currentPrice) <= float(max_price):
