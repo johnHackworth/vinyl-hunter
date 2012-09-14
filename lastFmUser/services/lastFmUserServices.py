@@ -17,8 +17,11 @@ class LastFm_user_service():
         self.artistsService = artists_service
 
     def fetchUser(self, lastFm_user):
+        print "enter fetchUser"
         username = lastFm_user.name
+        print -2
         self.api.fetch(username)
+        print 3
         for artist_data in self.api.artists:
             artists = Artist.objects.filter(name=artist_data['name'])
             if len(artists) == 0:
@@ -28,37 +31,42 @@ class LastFm_user_service():
                 artist = artists[0]
 
             lastFm_user.artists.add(artist)
-
+        print 4
         lastFm_user.lastFetched = datetime.now(pytz.utc)
         lastFm_user.save()
 
     def updateUser(self, user):
+        print "enter updateUser"
         if user.lastFetched < last_fetch_limit:
             self.fetchUser(user)
 
     def updateUserByName(self, username):
-        print username
+        print "enter updateUserByName"
         lastFm_user = LastFm_user.objects.get_or_create(name=username)[0]
-        print 2
+
         self.updateUser(lastFm_user)
         return lastFm_user
 
     def fetchUserArtists(self, user):
+        print "enter fetchUserArtists"
         for artist in user.artists.all():
             self.artistsService.updateArtistAlbums(artist)
 
     def fetchAll(self, username):
+        print "enter fetchAll"
         lastFm_user = self.updateUserByName(username)
         self.fetchUserArtists(lastFm_user)
         return lastFm_user
 
     def getExportedArtists(self, user):
+        print "enter getExportedArtists"
         exported_artists = []
         for artist in user.artists.all():
             exported_artists.append(artist.as_dict())
         return exported_artists
 
     def getUserAlbumsByName(self, username, max_price=None):
+        print "enter getUserAlbumsByName"
         lastFm_users = LastFm_user.objects.filter(name=username)
         if len(lastFm_users) == 0:
             # throw NotFoundException
@@ -67,16 +75,19 @@ class LastFm_user_service():
         return self.getUserAlbums(lastFm_user, max_price)
 
     def getUserAlbums(self, lastFm_user, max_price=None, filterSingles=False, currency=None):
+        print "enter getUserAlbums"
         albums = []
         for artist in lastFm_user.artists.all():
             albums += (self.artistsService.getArtistAlbums(artist, max_price, filterSingles, currency))
         return albums
 
     def getNotUpdatedUsers(self):
+        print "enter getNotUpdatedUsers"
         users = LastFm_user.objects.filter(lastFetched__lte=last_fetch_limit)
         return users
 
     def getArtist(self, artist_name):
+        print "enter getArtist"
         artist = self.artistsService.getArtist(artist_name)
         if artist is None:
             artist_data = self.fetchArtist(artist_name)
@@ -84,6 +95,7 @@ class LastFm_user_service():
         return artist
 
     def fetchArtist(self, artist_name):
+        print "enter fetchArtist"
         return self.api.fetchArtist(artist_name)
 
 

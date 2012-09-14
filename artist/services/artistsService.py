@@ -40,7 +40,8 @@ class Artists_service():
             artist.lastFetched = datetime.now(pytz.utc)
             artist.save()
         except Exception as e:
-            print "ALERT: we couldn't fetch data from " + artist.name + ' (' + e + ')'
+            print "ALERT: we couldn't fetch data from " + artist.name
+            print e
 
     def updateArtistAlbums(self, artist):
         if artist.lastFetched < last_fetch_limit:
