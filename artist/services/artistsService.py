@@ -16,6 +16,7 @@ class Artists_service():
         self.albumsService = albums_service
 
     def fetchArtist(self, artist):
+        # TODO: filter albums from urls different from source
         debug = "";
         try:
             self.api.fetch(artist.name)
