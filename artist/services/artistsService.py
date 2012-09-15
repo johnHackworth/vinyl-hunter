@@ -16,14 +16,15 @@ class Artists_service():
         self.albumsService = albums_service
 
     def fetchArtist(self, artist):
+        debug = "";
         try:
             self.api.fetch(artist.name)
             for album_data in self.api.albums:
 
                 album_data['artist'] = artist
                 currentPrice = album_data.pop('price')
-
-                albums = Album.objects.filter(ASIN=album_data['ASIN'])
+                debug = album_data
+                albums = Album.objects.filter(ASIN=album_data['ASIN'], source=album_data['source'])
                 if len(albums) == 0:
                     album = Album(**album_data)
                 else:
@@ -31,6 +32,7 @@ class Artists_service():
 
                 album.currentPrice = currentPrice
                 album.lastFetched = datetime.now(pytz.utc)
+                #  TODO: it seems that diferent international shops has the same albu
                 if album.minPrice == 0.00 or album.minPrice > album.currentPrice:
                     album.minPrice = album.currentPrice
                     album.priceUpdated = True
@@ -41,6 +43,7 @@ class Artists_service():
             artist.save()
         except Exception as e:
             print "ALERT: we couldn't fetch data from " + artist.name
+            # print debug
             print e
 
     def updateArtistAlbums(self, artist):

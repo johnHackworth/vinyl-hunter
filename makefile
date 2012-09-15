@@ -10,6 +10,7 @@ install:
 	sudo pip install hg+http://bitbucket.org/jespern/django-piston
 	sudo apt-get install mysql-server
 	sudo apt-get install python-mysqldb
+	sudo pip install django-autoslug
 	mysql -u root < install.sql
 	./manage.py syncdb
 

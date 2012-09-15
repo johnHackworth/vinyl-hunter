@@ -18,7 +18,7 @@ class LastFm_user_handler(ExtHandler):
         pass
 
     def read(self, request, username):
-        user = self.lastfm_service.fetchAll(username)
+        user = self.lastfm_service.updateUserByName(username)
         response = self.lastfm_service.getExportedArtists(user)
         return response
 

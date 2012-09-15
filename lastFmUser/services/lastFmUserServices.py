@@ -19,9 +19,9 @@ class LastFm_user_service():
     def fetchUser(self, lastFm_user):
 
         username = lastFm_user.name
-
+        print username
         self.api.fetch(username)
-
+        print 2
         for artist_data in self.api.artists:
             artists = Artist.objects.filter(name=artist_data['name'])
             if len(artists) == 0:
@@ -41,10 +41,9 @@ class LastFm_user_service():
             self.fetchUser(user)
 
     def updateUserByName(self, username):
-
         lastFm_user = LastFm_user.objects.get_or_create(name=username)[0]
-
         self.updateUser(lastFm_user)
+
         return lastFm_user
 
     def fetchUserArtists(self, user):
@@ -53,8 +52,8 @@ class LastFm_user_service():
             self.artistsService.updateArtistAlbums(artist)
 
     def fetchAll(self, username):
-
         lastFm_user = self.updateUserByName(username)
+
         self.fetchUserArtists(lastFm_user)
         return lastFm_user
 

@@ -15,6 +15,10 @@ class ExtModel():
         dictionary = {}
         for field in fields:
             fieldValue = getattr(self, field)
+
+            if hasattr(fieldValue, 'as_dict'):
+                fieldValue = fieldValue.as_dict()
+
             if type(fieldValue) is datetime:
                 fieldValue = unicode(fieldValue)
 
