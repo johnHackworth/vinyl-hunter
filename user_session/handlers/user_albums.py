@@ -34,7 +34,6 @@ class User_albums_handler(ExtHandler):
             else:
                 currency = False
 
-            return 1
             response = self.user_service.getUserAlbums(user, max_price, exclude_singles, currency)
             return HttpResponse(response)
 
