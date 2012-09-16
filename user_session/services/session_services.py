@@ -31,6 +31,11 @@ class Session_service():
         else:
             return result[0]
 
+    def validSession(self, session):
+        if self.getSession(session["user_id"], session["session_id"], session["session_hash"]) is None:
+            return False
+        return True
+
     def deleteSession(self, session_id, session_hash):
         current_session = Session.objects.filter(id=session_id, hash=session_hash)
         current_session.delete()
