@@ -25,7 +25,7 @@ class Artists_service():
                 album_data['artist'] = artist
                 currentPrice = album_data.pop('price')
                 debug = album_data
-                albums = Album.objects.filter(ASIN=album_data['ASIN'], source=album_data['source'])
+                albums = Album.objects.filter(URL=album_data['URL'])
                 if len(albums) == 0:
                     album = Album(**album_data)
                 else:
@@ -39,7 +39,11 @@ class Artists_service():
                     album.priceUpdated = True
                 else:
                     album.priceUpdated = False
-                album.save()
+                try:
+                    album.save()
+                except Exception as e:
+                    print "we couldn't save " + artist.name + ' - ' + album.title
+                    print e
             artist.lastFetched = datetime.now(pytz.utc)
             artist.save()
         except Exception as e:
