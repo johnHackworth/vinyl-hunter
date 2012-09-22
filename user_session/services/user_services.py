@@ -70,11 +70,21 @@ class User_service():
 
     def addArtist(self, user, artist_name):
         artist = self.lastFm_service.getArtist(artist_name)
-        user.artists.add(artist)
+        if artist is not None:
+            user.artists.add(artist)
+        return artist
 
     def ignoreArtist(self, user, artist_name):
         artist = self.lastFm_service.getArtist(artist_name)
-        user.ignoredArtists.add(artist)
+        if artist is not None:
+            user.ignoredArtists.add(artist)
+        return artist
+
+    def removeIgnoredArtist(self, user, artist_name):
+        artist = self.lastFm_service.getArtist(artist_name)
+        if artist is not None:
+            user.ignoredArtists.remove(artist)
+        return artist
 
     def getUserArtists(self, user):
         not_ignored_artists = []

@@ -28,6 +28,7 @@ class User_artists_handler(ExtHandler):
         loggedUser = self.session_service.getLoggedUser(sessionDTO)
         if loggedUser is not None:
             self.user_service.addArtist(loggedUser, artist_name)
+            self.user_service.removeIgnoredArtist(loggedUser, artist_name)
             response = self.user_service.getExportedArtists(loggedUser)
             return HttpResponse(response)
         else:

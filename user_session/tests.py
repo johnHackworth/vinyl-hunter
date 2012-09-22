@@ -53,7 +53,7 @@ class UserModelTest(TestCase):
         except:
             self.fail('bad type of exception (1)')
 
-        user.login = 'a'
+        user.login = 'abcdef'
         try:
             user.validate()
             self.fail()
@@ -62,7 +62,7 @@ class UserModelTest(TestCase):
         except:
             self.fail('bad type of exception (2)')
 
-        user.password = 'a'
+        user.password = 'abcdef '
         try:
             user.validate()
             self.fail()
@@ -71,10 +71,9 @@ class UserModelTest(TestCase):
         except:
             self.fail('bad type of exception (3)')
 
-        user.email = 'a'
+        user.email = 'javi@javi.es'
         try:
             user.validate()
-
         except:
             self.fail()
 
@@ -161,7 +160,7 @@ class userServiceTest(TestCase):
 
         user.login = 'prueba'
         user.password = 'prueba'
-        user.email = 'prueba@prueba'
+        user.email = 'prueba@prueba.es'
 
         try:
             user = self.user_service.saveUser(user)
@@ -177,7 +176,7 @@ class userServiceTest(TestCase):
         user = User()
         user.login = 'prueba'
         user.password = 'prueba'
-        user.email = 'prueba@prueba'
+        user.email = 'prueba@prueba.es'
         try:
             self.user_service.saveUser(user)
         except:
@@ -186,7 +185,7 @@ class userServiceTest(TestCase):
         user2 = User()
         user2.login = 'prueba'
         user2.password = 'prueba'
-        user2.email = 'prueba2@prueba'
+        user2.email = 'prueba2@prueba.es'
         success = False
         try:
             self.user_service.saveUser(user2)
@@ -197,7 +196,7 @@ class userServiceTest(TestCase):
         user3 = User()
         user3.login = 'prueba3'
         user3.password = 'prueba'
-        user3.email = 'prueba@prueba'
+        user3.email = 'prueba@prueba.erasmas'
         success = False
         try:
             self.user_service.saveUser(user3)
