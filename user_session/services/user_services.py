@@ -91,6 +91,7 @@ class User_service():
     def getUserAlbums(self, user, max_price=None, filter_singles = False, currency=None):
         albums = []
         for artist in self.getUserArtists(user):
+            self.lastFm_service.artistsService.updateArtistAlbums(artist)
             albums += (self.lastFm_service.artistsService.getArtistAlbums(artist, max_price, bool(filter_singles), currency))
         return albums
 
