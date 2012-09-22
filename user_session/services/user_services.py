@@ -22,21 +22,22 @@ class User_service():
         userDict['session'] = session.as_dict(["id", "hash"])
         return json.dumps(userDict)
 
-    def saveUser(self, user):
+    def saveUser(self, user, update = False):
         try:
             user.validate()
         except InvalidFieldsException as invalidFields:
             raise invalidFields
 
-        sameEmailUsers = User.objects.filter(email=user.email)
-        for sameEmailUser in sameEmailUsers:
-            if user.id != sameEmailUser.id:
-                raise ExistingEmailException(user.email)
+        if not update:
+            sameEmailUsers = User.objects.filter(email=user.email)
+            for sameEmailUser in sameEmailUsers:
+                if user.id != sameEmailUser.id:
+                    raise ExistingEmailException(user.email)
 
-        sameLoginUsers = User.objects.filter(login=user.login)
-        for sameLoginUser in sameLoginUsers:
-            if user.id != sameLoginUser.id:
-                raise ExistingLoginException(user.login)
+            sameLoginUsers = User.objects.filter(login=user.login)
+            for sameLoginUser in sameLoginUsers:
+                if user.id != sameLoginUser.id:
+                    raise ExistingLoginException(user.login)
 
         user.save()
         return user
@@ -69,11 +70,21 @@ class User_service():
 
     def addArtist(self, user, artist_name):
         artist = self.lastFm_service.getArtist(artist_name)
-        user.artists.add(artist)
+        if artist is not None:
+            user.artists.add(artist)
+        return artist
 
     def ignoreArtist(self, user, artist_name):
         artist = self.lastFm_service.getArtist(artist_name)
-        user.ignoredArtists.add(artist)
+        if artist is not None:
+            user.ignoredArtists.add(artist)
+        return artist
+
+    def removeIgnoredArtist(self, user, artist_name):
+        artist = self.lastFm_service.getArtist(artist_name)
+        if artist is not None:
+            user.ignoredArtists.remove(artist)
+        return artist
 
     def getUserArtists(self, user):
         not_ignored_artists = []
