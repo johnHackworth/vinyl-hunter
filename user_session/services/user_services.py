@@ -68,6 +68,11 @@ class User_service():
             for artist in user.lastFmUser.artists.all():
                 user.artists.add(artist)
 
+    def refreshFromLastFmUser(self, lastfm_user):
+        users = User.objects.filter(lastFmUser=lastfm_user)
+        for user in users:
+            self.importArtistsFromLastFmUser(user)
+
     def addArtist(self, user, artist_name):
         artist = self.lastFm_service.getArtist(artist_name)
         if artist is not None:
