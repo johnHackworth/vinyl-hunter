@@ -68,6 +68,11 @@ class User_service():
             for artist in user.lastFmUser.artists.all():
                 user.artists.add(artist)
 
+    def refreshFromLastFmUser(self, lastfm_user):
+        users = User.objects.filter(lastFmUser=lastfm_user)
+        for user in users:
+            self.importArtistsFromLastFmUser(user)
+
     def addArtist(self, user, artist_name):
         artist = self.lastFm_service.getArtist(artist_name)
         if artist is not None:
@@ -102,6 +107,7 @@ class User_service():
     def getUserAlbums(self, user, max_price=None, filter_singles = False, currency=None):
         albums = []
         for artist in self.getUserArtists(user):
+            self.lastFm_service.artistsService.updateArtistAlbums(artist)
             albums += (self.lastFm_service.artistsService.getArtistAlbums(artist, max_price, bool(filter_singles), currency))
         return albums
 

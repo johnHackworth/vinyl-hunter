@@ -39,6 +39,8 @@ class LastFm_user_service():
 
         if user.lastFetched < last_fetch_limit:
             self.fetchUser(user)
+            return True
+        return False
 
     def updateUserByName(self, username):
         lastFm_user = LastFm_user.objects.get_or_create(name=username)[0]
