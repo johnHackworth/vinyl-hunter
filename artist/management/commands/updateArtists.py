@@ -13,6 +13,5 @@ class Command(BaseCommand):
 
         artists = self.artist_service.getNotUpdatedArtists()
         for artist in artists:
-            print artist.name
             self.artist_service.updateArtistAlbums(artist)
 

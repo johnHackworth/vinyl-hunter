@@ -15,6 +15,13 @@ class Artists_service():
         self.api = Amazon()
         self.albumsService = albums_service
 
+    def findArtist(self, artist_name):
+        artists = Artist.objects.filter(name=artist_name)
+        if artists is not None and len(artists) > 0:
+            return artists[0]
+        else:
+            return None
+
     def fetchArtist(self, artist):
         # TODO: filter albums from urls different from source
         debug = "";

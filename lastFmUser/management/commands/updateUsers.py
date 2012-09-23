@@ -16,5 +16,4 @@ class Command(BaseCommand):
         for user in users:
             if not fetched_users < MAX_FETCH_BATCH:
                 break
-            print user.name
             self.lastfm_service.updateUser(user)
