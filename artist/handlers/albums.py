@@ -27,7 +27,7 @@ class Artist_albums_handler(ExtHandler):
                 max_price = None
 
             if "excludeSingles" in request.GET:
-                exclude_singles = request.GET["excludeSingles"]
+                exclude_singles = ((request.GET["excludeSingles"] == 'True') or (request.GET["excludeSingles"] == 'true'))
             else:
                 exclude_singles = False
 

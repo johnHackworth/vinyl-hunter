@@ -19,7 +19,7 @@ class Album_service():
         exported_albums = []
         for album in albums:
             if max_price is None or float(album.currentPrice) <= float(max_price):
-                if filter_single != True  or (album.format != 'Single' and album.format != 'EP' and album.format != 'CD Simple'):
+                if filter_single == False  or (album.format != 'Single' and album.format != 'EP' and album.format != 'CD Simple'):
                     exported_albums.append(album.as_dict())
         return exported_albums
 
