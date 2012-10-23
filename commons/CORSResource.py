@@ -10,7 +10,7 @@ class CORSResource(Resource):
     # headers sent in all responses
     cors_headers = [
         ('Access-Control-Allow-Origin', '*'),
-        ('Access-Control-Allow-Headers',  'Content-Type, Authorization, HTTP_HASH,  HTTP_SESSION, HTTP_USER, *'),
+        ('Access-Control-Allow-Headers',  'Content-Type, Authorization, HASH,  SESSION, USER, *'),
         #X-PINGOTHER, Authorization, Content-Type, Origin, X-Requested-With, X-Requested-By, *'),
     ]
 
