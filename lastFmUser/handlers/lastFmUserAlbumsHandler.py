@@ -26,7 +26,7 @@ class LastFm_user_albums_handler(ExtHandler):
             max_price = None
 
         if "excludeSingles" in request.GET:
-            exclude_singles = request.GET["excludeSingles"]
+            exclude_singles = (request.GET["excludeSingles"] == 'True')
         else:
             exclude_singles = False
 
