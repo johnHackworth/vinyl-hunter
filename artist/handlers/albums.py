@@ -6,17 +6,19 @@ from user_session.services import User_service, Session_service
 from commons.models import ExtHandler
 
 
-class User_albums_handler(ExtHandler):
+class Artist_albums_handler(ExtHandler):
     allowed_methods = ('GET')
-    lastFm_service = LastFm_user_service(Artists_service(Album_service()))
+    artist_service = Artists_service(Album_service())
+    lastFm_service = LastFm_user_service(artist_service)
     user_service = User_service(lastFm_service)
     session_service = Session_service(user_service)
 
-    def read(self, request, identification = None):
-        if identification is None:
+    def read(self, request, artist_name = None):
+        if artist_name is None:
             return HttpResponseBadRequest()
-        user = self.user_service.findUser(id=identification)
-        if user is None:
+        artist = self.artist_service.findArtist(artist_name)
+        if artist is None:
+            # TODO: if the artists is not found try to fecth it from lastfm
             return HttpResponseNotFound()
         else:
             if "maxPrice" in request.GET:
@@ -33,7 +35,7 @@ class User_albums_handler(ExtHandler):
                 currency = request.GET["currency"]
             else:
                 currency = False
-
-            response = self.user_service.getUserAlbums(user, max_price, exclude_singles, currency)
+            #TODO: give album status (ignored, bought, etc) if a user is logged
+            response = self.artist_service.getArtistAlbums(artist, max_price, exclude_singles, currency)
             return HttpResponse(response)
 

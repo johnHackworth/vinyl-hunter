@@ -50,7 +50,7 @@ class Session_service():
 
     def logUser(self, username, password=''):
         if username is not None and password is not None:
-            user = self.user_service.findUser({"login": username})
+            user = self.user_service.findUser(login=username)
             if user is not None:
                 if user.password == crypt(password, settings.PASSWORD_SALT):
                     session = self.createSession(user.id)
